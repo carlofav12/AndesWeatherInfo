@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .media-grid > div {
+            border-radius: 8px;
+            box-shadow: 0px 0px 30px #0000;
+            transition: transform 0.3s;
+            overflow: hidden;
+            width: 100%;
+            height: 0;
+            padding-top: 75%;
+            position: relative;
+        }
+
+        .media-grid > div:hover {
+            transform: scale(1.05);
+        }
+
+        .media-grid img,
+        .media-grid video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 8px;
+        }
+
+        /* Change cursor when hovering over videos */
+        .media-grid video:hover {
+            cursor: pointer;
+        }
+
+        /* Media Queries for responsiveness */
+        @media (max-width: 1200px) {
+            .media-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .media-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Style for fullscreen video */
+        .fullscreen-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1000;
+            background-color: black;
+        }
+
+        /* Styles for enlarged image */
+        .enlarged-image-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            max-width: 400px; /* Añadido para limitar el ancho máximo */
+            max-height: 600px; /* Añadido para limitar el alto máximo */
+            z-index: 1000;
+            display: none;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .enlarged-image-container img {
+            width: auto; /* Cambiado para mantener la proporción */
+            height: auto; /* Cambiado para mantener la proporción */
+            max-width: 100%; /* Añadido para limitar el ancho máximo */
+            max-height: 100%; /* Añadido para limitar el alto máximo */
+            border-radius: 9px;
+            margin: auto; /* Centra la imagen horizontalmente */
+            display: block; /* Hace que la imagen respete los márgenes */
+        }
+
+        /* Overlay to darken the background */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div th:replace="~{V_usu/extracts/header :: header}"></div>
+</header>
+<div class="container py-4">
+    <h1 class="text-center">GALERIA</h1>
+    <div class="media-grid">
+        <!-- Iterar sobre las galerías -->
+        <div th:each="galeria : ${galerias}">
+            <!-- Verificar si es imagen o video y mostrar en consecuencia -->
+            <div th:switch="${galeria.tipoGal}">
+                <!-- Si es tipo imagen -->
+                <img th:case="'imagen'" th:src="@{'/images/galeria/' + ${galeria.enlace}}" alt="Imagen" onclick="enlargeImage(this)">
+                <!-- Si es tipo video -->
+                <video th:case="'video'" controls>
+                    <source th:src="@{'/images/galeria/' + ${galeria.enlace}}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Si no coincide con ningún tipo -->
+                <div th:case="*" class="unsupported-media">Tipo de archivo no compatible</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Enlarged Image Container -->
+<div class="overlay" onclick="closeEnlargedImage()"></div>
+<div class="enlarged-image-container" id="enlargedImageContainer">
+    <img id="enlargedImage" src="" alt="Enlarged Image">
+</div>
+
+<footer>
+    <div th:replace="~{extracts/footer :: footer}"></div>
+</footer>
+
+<script>
+    function enlargeImage(img) {
+        const enlargedImageContainer = document.getElementById('enlargedImageContainer');
+        const enlargedImage = document.getElementById('enlargedImage');
+        enlargedImage.src = img.src;
+        enlargedImageContainer.style.display = 'block';
+        document.querySelector('.overlay').style.display = 'block';
+    }
+
+    function closeEnlargedImage() {
+        const enlargedImageContainer = document.getElementById('enlargedImageContainer');
+        enlargedImageContainer.style.display = 'none';
+        document.querySelector('.overlay').style.display = 'none';
+    }
+</script>
+</body>
+</html>

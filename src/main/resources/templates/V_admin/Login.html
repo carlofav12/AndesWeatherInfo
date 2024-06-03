@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Admin Login</title>
+	<style>
+		body {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+			font-family: Arial, sans-serif;
+			background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+		}
+
+		.login-container {
+			background-color: white;
+			padding: 2em;
+			border-radius: 10px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			width: 300px;
+			text-align: center;
+		}
+
+		h1 {
+			margin-bottom: 1.5em;
+			font-size: 1.5em;
+			color: #333;
+		}
+
+		.input-group {
+			margin-bottom: 1.5em;
+			text-align: left;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 0.5em;
+			color: #666;
+		}
+
+		input[type="text"],
+		input[type="password"] {
+			width: 100%;
+			padding: 0.5em;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			box-sizing: border-box;
+		}
+
+		button {
+			width: 100%;
+			padding: 0.75em;
+			border: none;
+			border-radius: 5px;
+			background-color: #fda085;
+			color: white;
+			font-size: 1em;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		button:hover {
+			background-color: #f6d365;
+		}
+
+		.error-message {
+			color: red;
+			margin-top: 1em;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="login-container">
+		<h1>Admin Login</h1>
+		<form th:action="@{/AdministradorLogin}" method="post">
+			<div class="input-group">
+				<label for="nombre">Nombre</label>
+				<input type="text" id="nombre" th:name="nombre" required>
+			</div>
+			<div class="input-group">
+				<label for="contrasena">Contraseña</label>
+				<input type="password" id="contrasena" th:name="contra" required>
+			</div>
+			<button type="submit">Iniciar Sesión</button>
+			<div th:if="${error}" class="error-message">
+				<p th:text="${error}"></p>
+			</div>
+		</form>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modificar Galería</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<header>
+    <div th:replace="~{V_admin/extracts/header :: header}"></div>
+</header>
+<main>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2>Modificar Galería</h2>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/Administrador/Galeria/ModificarGaleria}" th:object="${galeria}"
+                              method="post" enctype="multipart/form-data">
+                            <input type="hidden" id="id" name="id" th:value="${galeria.id}"/>
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" id="nombre" name="nombre" class="form-control"
+                                       th:value="${galeria.nombre}"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <input type="text" id="descripcion" name="descripcion" class="form-control"
+                                       th:value="${galeria.descripcion}"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="file" class="form-label">Archivo</label>
+                                <input type="file" id="file" name="file" class="form-control">
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <div th:replace="~{V_admin/extracts/footer :: footer}"></div>
+</footer>
+</body>
+</html>

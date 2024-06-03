@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fenómeno</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <header>
+        <div th:replace="~{extracts/header :: header}"></div>
+    </header>
+    <div class="container">
+        <h1 class="text-center" th:text="${fenomeno.nombreFenomeno}">Nombre del Fenómeno</h1>
+        <p class="text-center">La helada es un fenómeno meteorológico que ocurre cuando la temperatura del aire
+            desciende por debajo del punto de congelación del agua y el vapor de agua en la atmósfera se condensa
+            directamente en hielo.</p>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <img th:src="@{${fenomeno.foto}}" alt="Foto del Fenómeno" class="img-fluid d-block mx-auto">
+            </div>
+        </div>
+
+        <h2 class="text-center">Prevenciones de <span th:text="${fenomeno.nombreFenomeno}">Nombre del Fenómeno</span>
+        </h2>
+        <div th:each="depFen : ${departamentoFenomenos}">
+            <ul class="list-group">
+                <li class="list-group-item" th:each="prevencion : ${depFen.prevenciones}"
+                    th:text="${prevencion.descripcionPre}">Descripción de la prevención</li>
+            </ul>
+        </div>
+
+        <div th:each="depFen : ${departamentoFenomenos}">
+            <!-- ... -->
+            <div th:each="enfDepFen : ${depFen.enfDepFenList}">
+                <div class="fenomeno">
+                    <h2 class="text-center" th:text="${enfDepFen.enfermedad.nomEnfer}">Nombre de la Enfermedad</h2>
+                    <p class="text-center" th:text="${enfDepFen.enfermedad.descripcion}">Descripción de la Enfermedad</p>
+                    <p class="text-center">Escala: <span th:text="${enfDepFen.enfermedad.escala.NombreEscala}">Nombre de
+                            la Escala</span></p>
+                    <img th:src="@{${enfDepFen.enfermedad.foto}}" alt="Foto de la Enfermedad"
+                        th:onclick="|toggleInfo('info-${enfDepFen.enfermedad.codEnf}')|" class="img-fluid d-block mx-auto">
+                    <div th:class="'info'" th:id="|info-${enfDepFen.enfermedad.codEnf}|" style="display: none;">
+                        <h3 class="text-center">Prevención de la <span
+                                th:text="${enfDepFen.enfermedad.nomEnfer}"></span></h3>
+                        <div th:each="prevencion : ${enfDepFen.enfermedad.prevencionEnfList}">
+                            <div class="d-flex align-items-center">
+                                <span class="text-danger mr-2">✓</span>
+                                <span th:text="${prevencion.DESCRIPCION}">Descripción de la Prevención</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<footer>
+    <div th:replace="~{extracts/footer :: footer}"></div>
+</footer>
+<script>
+    function toggleInfo(id) {
+        var info = document.getElementById(id);
+        info.style.display = (info.style.display === 'none') ? 'block' : 'none';
+    }
+</script>
+
+</html>

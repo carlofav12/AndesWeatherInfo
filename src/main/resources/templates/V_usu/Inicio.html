@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Página Principal</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<style>
+		/* Customize the height of the iframe */
+		#map-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-bottom: 20px;
+		}
+
+		#map {
+			height: 900px;
+			width: 90%;
+			max-width: 1000px;
+			border: none;
+		}
+
+		.carousel-item img {
+			width: 100%;
+			height: 400px;
+			object-fit: cover;
+		}
+
+		.card-custom {
+			margin-bottom: 20px;
+			cursor: pointer;
+		}
+
+		.card-custom img {
+			height: 200px;
+			object-fit: cover;
+		}
+
+		.card-custom .card-body {
+			height: 150px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		#ciudadHuancayo {
+			list-style: none;
+			padding: 0;
+			text-align: center;
+		}
+
+		.city {
+			display: inline-block;
+			margin: 10px;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			width: 250px;
+			background-color: #f9f9f9;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+
+		#weather-info {
+			text-align: center;
+			margin-top: 20px;
+		}
+
+		@media (min-width: 768px) {
+			.card-custom img {
+				height: 150px;
+			}
+
+			.card-custom .card-body {
+				height: 100px;
+			}
+		}
+
+		@media (min-width: 992px) {
+			.card-custom img {
+				height: 200px;
+			}
+
+			.card-custom .card-body {
+				height: 150px;
+			}
+		}
+
+		.page-footer .container {
+			text-align: center;
+		}
+
+		.page-footer .container .d-flex {
+			flex-wrap: wrap;
+		}
+
+		.page-footer .container .d-flex>* {
+			margin-right: 20px;
+		}
+
+		.page-footer .container .city-info {
+			list-style: none;
+			padding: 0;
+		}
+
+		.page-footer .container .city-info .city {
+			display: inline-block;
+			margin: 10px;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			width: 250px;
+			background-color: #f9f9f9;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+
+		.page-footer .container .weather-info {
+			text-align: left;
+			margin-top: 20px;
+		}
+
+		.floating-button {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			background-color: #28a745;
+			color: white;
+			border: none;
+			border-radius: 50%;
+			width: 60px;
+			height: 60px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 24px;
+			cursor: pointer;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+		}
+
+		.floating-button:hover {
+			background-color: #218838;
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<div th:replace="~{V_usu/extracts/header :: header}"></div>
+	</header>
+	<button class="floating-button" onclick="redirectToEncuesta()">
+		<i class="fa-solid fa-message"></i>
+	</button>
+	<div th:if="${mensajeEncuestaCompletada}" class="alert alert-info alert-dismissible fixed-bottom fade show" role="alert">
+		<strong th:text="${mensajeEncuestaCompletada}"></strong>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+
+	<main>
+		<!-- Carousel -->
+		<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+			<ol class="carousel-indicators">
+				<li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"></li>
+				<li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></li>
+				<li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"></li>
+			</ol>
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img src="/images/slider/slide1.png" class="d-block w-100" alt="...">
+					<div class="carousel-caption d-none d-md-block">
+
+					</div>
+				</div>
+				<div class="carousel-item">
+					<img src="/images/slider/slide3.png" class="d-block w-100" alt="...">
+					<div class="carousel-caption d-none d-md-block">
+
+					</div>
+				</div>
+				<div class="carousel-item">
+					<img src="/images/slider/slide2.png" class="d-block w-100" alt="...">
+					<div class="carousel-caption d-none d-md-block">
+
+					</div>
+				</div>
+			</div>
+			<a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</a>
+			<a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</a>
+		</div>
+
+		<section class="page-footer">
+			<div class="container d-flex justify-content-center align-items-center flex-wrap">
+				<div class="d-flex flex-column align-items-center">
+					<label for="nombreDepartamentoInput">Ingrese el nombre del departamento:</label>
+					<!-- Utilizamos Thymeleaf para insertar el valor de ${nombreDepartamento} -->
+					<input type="text" id="nombreDepartamentoInput" value="${nombreDepartamento}"
+						th:value="${nombreDepartamento} + ', PE'">
+					<!-- Botón para buscar el clima -->
+					<button id="buscarClimaButton">Buscar Clima</button>
+				</div>
+				<!-- Lista donde se mostrará la información del clima -->
+				<ul id="ciudadHuancayo" class="city-info"></ul>
+
+				<!-- Información adicional del clima -->
+				<div id="weather-info" class="weather-info"></div>
+
+				<script>
+					// Función para buscar el clima
+					function buscarClima() {
+						// Obtener el valor actual del campo de entrada
+						const nombreDepartamento = document.getElementById("nombreDepartamentoInput").value;
+						const list = document.querySelector("#ciudadHuancayo");
+						const weatherInfo = document.getElementById("weather-info");
+
+						const apiKey = "da7754af4755afb47b6d755566f86968";
+						// Utilizar el valor del campo de entrada en la URL
+						const url = `https://api.openweathermap.org/data/2.5/weather?q=${nombreDepartamento}&appid=${apiKey}&units=metric`;
+
+						fetch(url)
+							.then(response => response.json())
+							.then(data => {
+								const { main, name, sys, weather, coord } = data;
+								const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@2x.png`;
+
+								const li = document.createElement("li");
+								li.classList.add("city");
+								const markup = `
+                                    <h2 class="city-name" data-name="${name},${sys.country}">
+                                        <span>${name}</span>
+                                        <sup>${sys.country}</sup>
+                                    </h2>
+                                    <div class="city-temp">${Math.round(main.temp)}<sup>°C</sup></div>
+                                    <figure>
+                                        <img class="city-icon" src=${icon} alt=${weather[0]["main"]}>
+                                        <figcaption>${weather[0]["description"]}</figcaption>
+                                    </figure>
+                                `;
+								li.innerHTML = markup;
+								// Agregar el nuevo elemento a la lista
+								list.appendChild(li);
+
+								// Mostrar información adicional del clima
+								const weatherInfoMarkup = `
+								<h3>Información del Clima en ${name}</h3>
+								<p>Temperatura: ${main.temp} °C</p>
+								<p>Altitud: ${coord.lat}, ${coord.lon}</p>
+								<p>Humedad: ${main.humidity}%</p>
+								<p>Presión: ${main.pressure} hPa</p>
+							`;
+								weatherInfo.innerHTML = weatherInfoMarkup;
+
+								// Ocultar el cuadro de búsqueda y el texto después de realizar la búsqueda
+								document.getElementById("nombreDepartamentoInput").style.display = "none";
+								document.querySelector("label[for='nombreDepartamentoInput']").style.display = "none";
+								document.getElementById("buscarClimaButton").style.display = "none";
+							})
+							.catch(() => {
+								// Manejo de errores
+								console.error("No se pudo obtener la información del clima para el departamento ingresado.");
+							});
+					}
+
+					// Realizar la búsqueda automáticamente al cargar la página
+					window.onload = function () {
+						buscarClima();
+					};
+				</script>
+		</section>
+
+		<div id="map-container" class="mb-4">
+			<h3>Mapa Meteorológico</h3>
+			<iframe id="map" src="https://www.senamhi.gob.pe/mapas/mapa-climatico-v2/" allowfullscreen></iframe>
+		</div>
+
+		<!-- Additional Information -->
+		<div class="container py-4">
+			<div class="row justify-content-center">
+				<div class="col-md-10">
+					<h2 class="text-start mb-4"><b>Noticias</b></h2>
+					<div class="row">
+						<!-- Iterar sobre la lista de noticias -->
+						<div th:each="noticia : ${noticias}" class="col-12 col-md-6 col-lg-4 mb-4">
+							<div class="card card-custom" onclick="window.open('${noticia.link}', '_blank')">
+								<img th:src="@{'/images/noticias/' + ${noticia.imgNoti}}" class="card-img-top"
+									alt="Noticia" />
+								<div class="card-body">
+									<p class="card-text" th:text="${noticia.desNoticia}"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<script>
+		function redirectToEncuesta() {
+			window.location.href = "/encuesta";
+		}
+	</script>
+	<footer>
+		<div th:replace="~{extracts/footer :: footer}"></div>
+	</footer>
+</body>
+
+</html>
